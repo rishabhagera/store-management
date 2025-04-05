@@ -1,0 +1,110 @@
+
+CREATE table mstCity ( cityid numeric(4) PRIMARY KEY, cityName varchar(15) NOT Null );
+
+CREATE TABLE mstCustomer (
+    CustomerId VARCHAR(6) PRIMARY KEY CHECK (CustomerId LIKE 'C%'),  
+    CustomerName VARCHAR(35) NOT NULL,
+    Cityid numeric(4) NOT NULL,
+    CustomerArea VARCHAR(15) NOT NULL,
+    CustomerMobileNo NUMERIC(11,0) NOT NULL,
+    CustomerAddress VARCHAR(70) NOT NULL,
+    CustomerType VARCHAR(15) NOT NULL,
+	FOREIGN KEY (Cityid) REFERENCES mstcity(cityid)  
+);
+
+
+
+CREATE TABLE mstAdmin
+(
+    adminId VARCHAR(6) PRIMARY KEY CHECK (adminId LIKE 'A%'),
+    adminUserName VARCHAR(15) NOT NULL,
+    adminPassword VARCHAR(255) NOT NULL,
+    adminRole VARCHAR(15) CHECK (adminRole IN ('owner', 'cashier', 'manager', 'accountant')) DEFAULT 'owner',
+    accountStatus VARCHAR(15) DEFAULT 'active',
+    email VARCHAR(50) UNIQUE NOT NULL,
+    phoneNumber VARCHAR(15)
+);
+
+
+CREATE TABLE mstOther (
+    OtherId VARCHAR(6) PRIMARY KEY CHECK (OtherId LIKE 'O%'), 
+    OtherName VARCHAR(35) NOT NULL, 
+    Cityid NUMERIC(4) NOT NULL,
+    OtherArea VARCHAR(15),
+    OtherMobileNo NUMERIC(11,0) NOT NULL, 
+    OtherAddress VARCHAR(70) NOT NULL,
+    OtherType VARCHAR(15) NOT NULL,
+    FOREIGN KEY (Cityid) REFERENCES mstCity(cityid)  
+);
+
+
+CREATE TABLE mstSalesMan (
+ SalesManId VARCHAR(6) PRIMARY KEY CHECK (SalesManId LIKE 'S%'), 
+SalesManName VARCHAR(35) NOT NULL,
+ Cityid NUMERIC(4) NOT NULL, 
+ SalesManArea VARCHAR(15),
+ SalesManMobileNo NUMERIC(11,0) NOT NULL,
+ SalesManAddress VARCHAR(70) NOT NULL,
+ SalesManType VARCHAR(15) NOT NULL,
+FOREIGN KEY (Cityid) REFERENCES mstCity(cityid) 
+ );
+
+
+CREATE TABLE mstHsn (
+    HsnId INT PRIMARY KEY  AUTO_INCREMENT,
+    Hsncode VARCHAR(8) NOT NULL UNIQUE,
+    RateOfGst NUMERIC(5,2) NOT NULL
+);
+
+
+CREATE TABLE mstLabourCode (
+    LabourId INT PRIMARY KEY AUTO_INCREMENT,
+    Labourcode VARCHAR(20) NOT NULL UNIQUE,
+    LabourType VARCHAR(10) NOT NULL,
+    ShortCodeL VARCHAR(3) NOT NULL UNIQUE
+);
+
+
+Create table mstProduct
+(
+    ProductId INT PRIMARY KEY AUTO_INCREMENT,
+    ProductName varchar(100) NOT NULL UNIQUE,
+    ShortCodeP varchar(3) NOT NULL UNIQUE
+);
+
+
+
+Create table mstItemGroup
+(
+    GroupId INT PRIMARY KEY AUTO_INCREMENT,
+    GroupName varchar(30) NOT NULL UNIQUE,
+    ShortCodeGroup varchar(3) NOT NULL UNIQUE,
+    GroupType varchar(20) NOT Null
+);
+
+
+CREATE TABLE mstItem (
+    ItemId VARCHAR(3) PRIMARY KEY,
+    ItemName VARCHAR(15) NOT NULL,
+    Hsncode VARCHAR(8) NOT NULL,
+    GroupName VARCHAR(30) NOT NULL,
+    ProductName VARCHAR(100) NOT NULL,
+    Labourcode VARCHAR(20) NOT NULL,
+
+    FOREIGN KEY (Hsncode) REFERENCES mstHsn(Hsncode),
+    FOREIGN KEY (GroupName) REFERENCES mstItemGroup(GroupName),
+    FOREIGN KEY (ProductName) REFERENCES mstProduct(ProductName),
+    FOREIGN KEY (Labourcode) REFERENCES mstLabourCode(Labourcode)
+);
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+https://cdn.dribbble.com/userupload/16320784/file/original-fa8ba73df40eb8ff632329b53d976bd6.jpg?resize=1024x768&vertical=center
